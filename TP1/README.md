@@ -1,7 +1,7 @@
 # TP1 : Análise de um dataset
 
 ## Compilar:
-Correr o comando *"python3 statistic.py < emd.csv"*.
+        python3 statistic.py < emd.csv
 
 ## Objetivos:
 Ler o dataset, processá-lo e criar os seguintes resultados:
