@@ -15,6 +15,12 @@ inOrderedList = False
 
 def mdToHtml(line):
     global inOrderedList
+    if line == "\n":
+        line = "<p></p>"
+        if inOrderedList:
+            inOrderedList = False
+            line = "\t</ol>\n" + "\t" + line
+        return line
     headerMatch = re.match(r'^(#{1,3})\s*(.*)',line)
     if headerMatch:
         hastags, content = headerMatch.groups()
@@ -26,7 +32,7 @@ def mdToHtml(line):
         content = orderedListMatch.group(1)
         if not(inOrderedList):
             inOrderedList = True
-            line = f"\t<ol>\n\t\t<li>{content}</li>"
+            line = f"\t<ol>\n\t\t\t<li>{content}</li>"
         else:
             line = f"\t\t<li>{content}</li>"
     else:
@@ -52,9 +58,9 @@ def mdToHtml(line):
 
 
 for line in sys.stdin:
-    if line == "\n":
-        html += "<p></p>"
-    htmlLine = mdToHtml(line.strip()) + "\n"
+    htmlLine = "\t" + mdToHtml(line)
+    if not(htmlLine.endswith("\n")):
+        htmlLine += "\n"
     html += htmlLine
 
 html += "</body>\n</html>"
