@@ -1,8 +1,8 @@
 # TP2: Conversor de MD para HTML
 
 ## Compilar:
-`python3 mdToHtml.py < input.md` [^1]
-`python3 mdToHtml.py output.html < input.md`
+```python3 mdToHtml.py < input.md``` [^1]
+```python3 mdToHtml.py output.html < input.md```
 
 [^1]: Se não for especificado o nome do ficheiro de output o nome default é *output.html*
 
