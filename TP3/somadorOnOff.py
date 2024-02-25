@@ -1,6 +1,12 @@
 import sys
 import re
 
+onlyOff = r'(.*?)\b[Oo][Ff]{2}\b' # linha que contém um 'off'
+onlyOn = r'(.*?)\b[oO][nN]\b(.*)' # linha que contém um 'on'
+onAndOff = r'\b[oO][nN]\b(.*?)\b[oO][fF]{2}\b' # linha que contém um 'on' seguido de um 'off'
+multipleOn = r'\b[oO][nN]\b(?!.*\b[oO][nN]\b)(.*)' # linha com múltiplos 'on'
+
+
 def processText(text, sum, openOn):
     partialSum = 0
     matches = re.findall(r'\d+|=',text) # Encontrar números e '='
@@ -15,40 +21,66 @@ def processText(text, sum, openOn):
     sum += partialSum
     return sum
 
+
+def onProcessing(line, sum, openOn):
+    offMatch = re.match(onlyOff, line)
+
+    if offMatch:
+        sum = processText(offMatch.group(1), sum, openOn)
+        openOn = False
+        endIndex = offMatch.end()
+        sum, openOn = notOnProcessing(line[endIndex:],sum, openOn)
+    else:
+        sum = processText(line, sum, openOn)
+    
+    return sum, openOn
+
+
+def notOnProcessing(line, sum, openOn):
+    fullMatchIter = re.finditer(onAndOff, line)
+    onMatch = re.match(onlyOn,line)
+    multipleOnMatches = re.findall(multipleOn, line)
+    
+    fullMatch = list(fullMatchIter)
+    if fullMatch:
+        index = 0
+        for match in fullMatch:    
+            startIndexMatch = match.start()
+            if startIndexMatch != index:
+                sum = processText(line[index:startIndexMatch], sum, openOn)
+            openOn = True
+            sum = processText(match.group(1), sum, openOn)
+            openOn = False
+            index = match.end()
+        
+        if multipleOnMatches and 'off' not in multipleOnMatches[-1].lower():
+            openOn = True
+            sum = processText(multipleOnMatches[-1], sum, openOn)
+
+    elif onMatch: # and fullMatch is None
+        openOn = True
+
+        if onMatch.group(1) != "":
+            sum = processText(onMatch.group(1), sum, openOn)
+        
+        sum = processText(onMatch.group(2), sum, openOn)
+    
+    else:
+        sum = processText(line, sum, openOn)
+    
+    return sum, openOn
+
+
 def main():
     sum = 0
     openOn = False
 
     for line in sys.stdin:
         if openOn:
-            offMatch = re.match(r'(.*)\s+off\s+', line)
-            if offMatch:
-                sum = processText(line, sum, openOn)
-                openOn = False
-            else:
-                sum = processText(line, sum, openOn)
+            sum, openOn = onProcessing(line, sum, openOn)
         else:
-            fullMatch = re.match(r'.*\s+on\s+(.*?)\s+off\s+.*$', line)
-            onMatch = re.match(r'.*\s+on\s+(.*)$',line)
-            if fullMatch:
-                openOn = True
-                sum = processText(fullMatch.group(1), sum, openOn)
-                openOn = False
-            elif onMatch:
-                openOn = True
-                sum = processText(onMatch.group(1), sum, openOn)
-            else: # elif
-                sum = processText(line, sum, openOn)
-    # match e retirar as strings dentro do on e do off
-    # maybe findall mas pode não funcionar por ser linhas diferentes
-    # if not openOn : try findall começa on acaba off, se for none começa match on(.) e fazer o parse auxiliar de \1
-    # if openOn : try match (.*?)off
-    # verificar se off ou \s+off\s+
-    # parse das strings, retirar os números e os iguais em função auxiliar
-    # passar como argumento um bool a dizer se está dentro de um on maybe
-    # se encontrar um número junta à soma, se encontrar um igual dá print à soma
-    # Maybe juntar tudo a uma lista e processar os números e prints por ordem no main
-    # repetir e iterar por todas
+            sum, openOn = notOnProcessing(line, sum, openOn)
+
 
 if __name__ == '__main__':
     main()
