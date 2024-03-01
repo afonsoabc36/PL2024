@@ -1,0 +1,5 @@
+Iniciando a soma com 123 e 456 que dá um resultado =
+oN agora somando 78 e 90 atualizando o resultado = parcial
+OfF agora ignoramos 12 e 34 continuando com resultado = não diferente do anterior
+ON somamos 56 ficando com resultado = oFf novamente ignoramos 78 
+on finalizamos adicionando 9 e 3, ficando com o nosso resultado = final.

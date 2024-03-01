@@ -73,7 +73,7 @@ def notOnProcessing(line, sum, openOn):
 
 def main():
     sum = 0
-    openOn = False
+    openOn = True
 
     for line in sys.stdin:
         if openOn:
