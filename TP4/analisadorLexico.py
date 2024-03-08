@@ -1,34 +1,32 @@
-import sys
-import re
 import ply.lex as lex
 
 # Palavras reservadas para queries select do sql
 reservedWords = {
-    'select': 'KEYWORD',
-    'from': 'KEYWORD',
-    'where': 'KEYWORD',
-    'and': 'KEYWORD',
-    'or': 'KEYWORD',
-    'inner': 'KEYWORD',
-    'outer': 'KEYWORD',
-    'like': 'KEYWORD',
-    'full': 'KEYWORD',
-    'left': 'KEYWORD',
-    'right': 'KEYWORD',
-    'on': 'KEYWORD',
-    'join': 'KEYWORD',
-    'group': 'KEYWORD',
-    'by': 'KEYWORD',
-    'having': 'KEYWORD',
-    'union': 'KEYWORD',
-    'order': 'KEYWORD',
-    'limit': 'KEYWORD',
-    'as': 'KEYWORD',
+    'select': 'SELECT',
+    'from': 'FROM',
+    'where': 'WHERE',
+    'and': 'AND',
+    'or': 'OR',
+    'inner': 'INNER',
+    'outer': 'OUTER',
+    'like': 'LIKE',
+    'full': 'FULL',
+    'left': 'LEFT',
+    'right': 'RIGHT',
+    'on': 'ON',
+    'join': 'JOIN',
+    'group': 'GROUP',
+    'by': 'BY',
+    'having': 'HAVING',
+    'union': 'UNION',
+    'order': 'ORDER',
+    'limit': 'LIMIT',
+    'as': 'AS',
 }
 
 tokens = [
-    'KEYWORD',
     'IDENTIFIER',
+    'EVERYTHING',
     'COMMA',
     'NUMBER',
     'PERIOD',
@@ -36,12 +34,13 @@ tokens = [
     'LPAREN',
     'RPAREN',
     'SEMICOLON'
-]
+] + list(reservedWords.values())
 
 t_COMMA = r'\,'
+t_EVERYTHING = r'\*'
 t_NUMBER = r'\d+'
 t_PERIOD = r'\.'
-t_OPERATOR = r'[+\-*/=<>]+'
+t_OPERATOR = r'[+\-/=<>]+'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_SEMICOLON = r'\;'
