@@ -5,12 +5,18 @@ from datetime import date
 stock = []
 saldo = 0 # Em cêntimos
 
+codProd = r'[A-Z]+[0-9]+'
+preço = r'\d+(?:\.\d+)?'
+
 listar = r'listar\s*'
 moeda = r'moeda\s+(.*)$'
-selecionar = r'selecionar\s+([A-Z]+[0-9]+)$'
+selecionar = fr'selecionar\s+({codProd})\s*$'
 sair = r'sair\s*'
 ajuda = r'ajuda\s*'
-
+alterarQ = fr'alterarq\s+({codProd})\s+([0-9]+)$'
+alterarP = fr'alterarp\s+({codProd})\s+({preço})$'
+adicionarP = fr'adicionarp\s+({codProd})\s+("[a-zA-Z\s]+")\s+([0-9]+)\s+({preço})$'
+removerP = fr'removerp\s+({codProd})\s*$'
 
 def showMoney(money):
     money = int(money)
@@ -53,7 +59,7 @@ def loadMoney(group):
     
     print("maq: Saldo = " + showMoney(saldo))
 
-def selectItem(group):
+def selectItem(idProd):
     global saldo, stock
     found = False
     index = 0
@@ -61,7 +67,7 @@ def selectItem(group):
     while index < len(stock) and not found:
         item = stock[index]
         
-        if item['cod'] == group:
+        if item['cod'] == idProd:
             found = True
             if item['quant'] > 0:
                 if item['preco'] <= saldo:
@@ -78,7 +84,79 @@ def selectItem(group):
         index += 1
 
     if not found:
-        print(f"maq: Produto {group} inexistente")
+        print(f"maq: Produto {idProd} inexistente")
+
+def alterQuant(idProd, newQuantity):
+    global stock
+    found = False
+    index = 0
+
+    while index < len(stock) and not found:
+        item = stock[index]
+        
+        if item['cod'] == idProd:
+            found = True
+            item['quant'] = newQuantity
+            print(f"Quantidade alterada! Produto {item['cod']} com quantidade {item['quant']}")
+        index += 1
+
+    if not found:
+        print(f"maq: Produto {idProd} inexistente")
+
+def alterPrice(idProd, newPrice):
+    global stock
+    found = False
+    index = 0
+
+    while index < len(stock) and not found:
+        item = stock[index]
+        
+        if item['cod'] == idProd:
+            found = True
+            item['preco'] = newPrice
+            print(f"Preço alterado! Produto {item['cod']} com preço {item['preco']}e")
+        index += 1
+
+    if not found:
+        print(f"maq: Produto {idProd} inexistente")
+
+def addProduct(cod, nome, quant, preco):
+    global stock
+    found = False
+    index = 0
+    prod = {
+        "cod": cod,
+        "nome": nome[1:-1],
+        "quant": quant,
+        "preco": preco
+    }
+
+    while index < len(stock) and not found:
+        item = stock[index]
+        if item['cod'] == cod:
+            found = True
+            print(f"Produto com código {cod} já exite.")
+        index += 1
+    
+    if not found:
+        stock.append(prod)
+        print(f"Produto {cod} adicionado com sucesso.")
+
+def removeProduct(cod):
+    global stock
+    found = False
+    index = 0
+
+    while index < len(stock) and not found:
+        item = stock[index]
+        if item['cod'] == cod:
+            found = True
+            del stock[index]
+            print(f"Produto {item['cod']} removido!")
+        index += 1
+    
+    if not found:
+        print(f"Produto {cod} inexistente.")
 
 def troco():
     global saldo
@@ -121,6 +199,11 @@ def help():
     print("MOEDA (1e, 20c, 5c.) -> Carrega dinheiro na máquina.")
     print("SELECIONAR (A00) -> Seleciona um produto para compra.")
     print("SAIR -> Retira o troco.")
+    print("Ações de Administrador:")
+    print("ALTERARQ (A00 0) -> Altera a quantidade de um produto.")
+    print("ALTERARP (A00 0.0) -> Alterar o preço de um produto.")
+    print('ADICIONARP (COD "NOME" QUANT PRECO) -> Adiciona um novo produto à máquina.')
+    print("REMOVERP (A00) -> Remove um produto da máquina.")
 
 
 def main():
@@ -138,6 +221,14 @@ def main():
             loadMoney(match.group(1))
         elif match := re.match(selecionar, text, re.I):
             selectItem(match.group(1))
+        elif match := re.match(alterarQ, text, re.I):
+            alterQuant(match.group(1), match.group(2))
+        elif match := re.match(alterarP, text, re.I):
+            alterPrice(match.group(1), match.group(2))
+        elif match := re.match(adicionarP, text, re.I):
+            addProduct(match.group(1), match.group(2), match.group(3), match.group(4))
+        elif match := re.match(removerP, text, re.I):
+            removeProduct(match.group(1))
         elif re.match(ajuda, text, re.I):
             help()
         else:

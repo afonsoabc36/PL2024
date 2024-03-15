@@ -56,7 +56,13 @@
     {
         "cod": "A29",
         "nome": "queque de cenoura",
-        "quant": 5,
-        "preco": 0.8
+        "quant": "4",
+        "preco": "0.9"
+    },
+    {
+        "cod": "A31",
+        "nome": "batatas fritas",
+        "quant": "10",
+        "preco": "1.0"
     }
 ]
