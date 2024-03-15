@@ -15,9 +15,9 @@ maq: 2024-03-08, Stock carregado, Estado atualizado.
 maq: Bom dia. Estou disponível para atender o seu pedido.
 >> LISTAR
 maq:
-cod | nome | quantidade |  preço
+cod |   nome   | quantidade |  preço
 ---------------------------------
-A23 água 0.5L 8 0.7
+A23   água 0.5L       8         0.7
 ...
 >> MOEDA 1e, 20c, 5c, 5c .
 maq: Saldo = 1e30c
