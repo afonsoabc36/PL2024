@@ -1,0 +1,62 @@
+[
+    {
+        "cod": "A11",
+        "nome": "\u00e1gua 0.5L",
+        "quant": 8,
+        "preco": 0.7
+    },
+    {
+        "cod": "A13",
+        "nome": "\u00e1gua 0.33L",
+        "quant": 12,
+        "preco": 0.5
+    },
+    {
+        "cod": "A15",
+        "nome": "queque de chocolate",
+        "quant": 5,
+        "preco": 0.8
+    },
+    {
+        "cod": "A17",
+        "nome": "p\u00e3o de chouri\u00e7o",
+        "quant": 6,
+        "preco": 1.2
+    },
+    {
+        "cod": "A19",
+        "nome": "bolo de arroz",
+        "quant": 7,
+        "preco": 0.9
+    },
+    {
+        "cod": "A21",
+        "nome": "pacote de gomas",
+        "quant": 9,
+        "preco": 1.0
+    },
+    {
+        "cod": "A23",
+        "nome": "sumo de laranja 0.33L",
+        "quant": 12,
+        "preco": 0.8
+    },
+    {
+        "cod": "A25",
+        "nome": "bolacha Maria",
+        "quant": 15,
+        "preco": 0.5
+    },
+    {
+        "cod": "A27",
+        "nome": "napolitana de chocolate",
+        "quant": 4,
+        "preco": 1.1
+    },
+    {
+        "cod": "A29",
+        "nome": "queque de cenoura",
+        "quant": 5,
+        "preco": 0.8
+    }
+]
