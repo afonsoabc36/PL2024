@@ -38,6 +38,7 @@ def loadStockFromFile():
         return False
 
 def listItems():
+    print("maq:")
     print("   cod   |   nome   |   quantidade   |   preço   ")
     print("-------------------------------------------------")
     for prod in stock:
@@ -55,7 +56,7 @@ def loadMoney(group):
         elif match := re.match(r'\s*([125][0]|[521])c', coin, re.I):
             saldo += int(match.group(1))
         else:
-            print(f"Moeda inválida: {coin}")
+            print(f"maq: Moeda inválida: {coin}")
     
     print("maq: Saldo = " + showMoney(saldo))
 
@@ -97,7 +98,7 @@ def alterQuant(idProd, newQuantity):
         if item['cod'] == idProd:
             found = True
             item['quant'] = newQuantity
-            print(f"Quantidade alterada! Produto {item['cod']} com quantidade {item['quant']}")
+            print(f"maq: Quantidade alterada! Produto {item['cod']} com quantidade {item['quant']}")
         index += 1
 
     if not found:
@@ -114,7 +115,7 @@ def alterPrice(idProd, newPrice):
         if item['cod'] == idProd:
             found = True
             item['preco'] = newPrice
-            print(f"Preço alterado! Produto {item['cod']} com preço {item['preco']}e")
+            print(f"maq: Preço alterado! Produto {item['cod']} com preço {item['preco']}e")
         index += 1
 
     if not found:
@@ -135,12 +136,12 @@ def addProduct(cod, nome, quant, preco):
         item = stock[index]
         if item['cod'] == cod:
             found = True
-            print(f"Produto com código {cod} já exite.")
+            print(f"maq: Produto com código {cod} já exite.")
         index += 1
     
     if not found:
         stock.append(prod)
-        print(f"Produto {cod} adicionado com sucesso.")
+        print(f"maq: Produto {cod} adicionado com sucesso.")
 
 def removeProduct(cod):
     global stock
@@ -152,11 +153,11 @@ def removeProduct(cod):
         if item['cod'] == cod:
             found = True
             del stock[index]
-            print(f"Produto {item['cod']} removido!")
+            print(f"maq: Produto {item['cod']} removido!")
         index += 1
     
     if not found:
-        print(f"Produto {cod} inexistente.")
+        print(f"maq: Produto {cod} inexistente.")
 
 def troco():
     global saldo
@@ -194,6 +195,7 @@ def leave():
     print("maq: Até à próxima.")
 
 def help():
+    print("maq:")
     print("Ações possíveis:")
     print("LISTAR -> Mostra a lista de produtos disponíveis.")
     print("MOEDA (1e, 20c, 5c.) -> Carrega dinheiro na máquina.")
@@ -208,7 +210,7 @@ def help():
 
 def main():
     if not loadStockFromFile():
-        print("Erro ao carregar o stock do ficheiro JSON.")
+        print("maq: Erro ao carregar o stock do ficheiro JSON.")
         return
     print(f"maq: {date.today()}, Stock carregado, Estado atualizado.")
     print("maq: Bom dia. Estou disponível para atender o seu pedido.")
@@ -232,7 +234,7 @@ def main():
         elif re.match(ajuda, text, re.I):
             help()
         else:
-            print("Comando não disponível!\nEscreva 'AJUDA' para ver as ações possíveis!")
+            print("maq: Comando não disponível!\nmaq: Escreva 'AJUDA' para ver as ações possíveis!")
 
         text = input(">> ")
 
